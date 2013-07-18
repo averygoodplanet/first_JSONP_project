@@ -8,3 +8,30 @@ AUTHOR: Peter Himmelreich
 	width: 980px;
 	margin: auto;
 }
+
+div {
+	border: 1px solid black;
+}
+
+#input_div {
+	float: left;
+	margin-top: 60px;
+	margin-left: 60px;
+}
+
+#map_div {
+	float: right;
+	margin-top: 30px;
+	margin-right: 60px;
+}
+
+#yelp_div {
+	float: right;
+	clear: both;
+	margin-top: 40px;
+	margin-right: 60px;
+}
+
+#zipcode {
+	margin-left: 25px;
+}
