@@ -12,13 +12,14 @@ $(document).ready( function () {
 	};
 	
 	console.log("output:"+generateURL());
-
+	
+	var requestURL = "http://api.yelp.com/business_review_search?term=cream%20puffs&location=650%20Mission%20St%2ASan%20Francisco%2A%20CA&ywsid=c_DiXp-d5eEttXsSIfY9Tg";
+	
 	$.ajax({
-		dataType: "json",
-		url: generateURL(),
-		cache: false,
-		success: function (result, textStatus) {
-			console.log("textStatus"+textStatus);
+		dataType: "jsonp",
+		url: requestURL,
+		success: function (data) {
+			console.log(data)
 		}
 	});
 	
