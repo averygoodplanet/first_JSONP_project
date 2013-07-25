@@ -1,4 +1,14 @@
-$(document).ready( function () {
+$(document).ready(function(){
+	console.log("In the ready function"); 
+    $.getJSON("https://api.themoviedb.org/3/search/movie?api_key=75d3deb3734e06d103614d18e226d65c&query='Top Gun'&callback=?"
+, function(json) {
+	console.log("In the getJSON function");
+	console.log(json);
+	$("body").append("<img id='thePoster'	src='json[0].posters[0].image.url' />");
+	});
+ });
+
+/* $(document).ready( function () {
 	var description_array = {
 		term: "cream puffs",
 		location: "650 Mission St*San Francisco* CA",
@@ -28,3 +38,4 @@ $(document).ready( function () {
 	});
 	
 });
+*/
