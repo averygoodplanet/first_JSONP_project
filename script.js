@@ -1,10 +1,17 @@
 $(document).ready(function(){
-	console.log("In the ready function"); 
-    $.getJSON("https://api.themoviedb.org/3/search/movie?api_key=75d3deb3734e06d103614d18e226d65c&query='Top Gun'&callback=?"
+   
+  var imageURLprefix = "http://d3gtl9l2a4fn1j.cloudfront.net/t/p/w185";
+  var imageURLfinal = "";
+  
+   //testing API calls for 1st movie returned on movie name search "/3/search/movie?api_key=###&query='movie name'..."
+   $.getJSON("https://api.themoviedb.org/3/search/movie?api_key=75d3deb3734e06d103614d18e226d65c&query='Top Gun'&callback=?"
 , function(json) {
-	console.log("In the getJSON function");
 	console.log(json);
-	$("body").append("<img id='thePoster'	src='json[0].posters[0].image.url' />");
+	console.log("title: " + json.results[0].title);
+	console.log("release_date substring to release year: " + (json.results[0].release_date).substring(0,4));
+	console.log("posterURL: " + (imageURLprefix + json.results[0].poster_path));
+	imageURLfinal = imageURLprefix + json.results[0].poster_path;
+	$("#poster").html("<img src=imageURLfinal >");
 	});
  });
 
