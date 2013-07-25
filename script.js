@@ -2,16 +2,18 @@ $(document).ready(function(){
    
   var imageURLprefix = "http://d3gtl9l2a4fn1j.cloudfront.net/t/p/w185";
   var imageURLfinal = "";
+  var movieSearchname= "Howard the Duck";
   
-   //testing API calls for 1st movie returned on movie name search "/3/search/movie?api_key=###&query='movie name'..."
-   $.getJSON("https://api.themoviedb.org/3/search/movie?api_key=75d3deb3734e06d103614d18e226d65c&query='Top Gun'&callback=?"
+   //testing API calls for 1st movie returned on movie name search using ".../3/search/movie?api_key=###&query='movie name'..."
+   $.getJSON("https://api.themoviedb.org/3/search/movie?api_key=75d3deb3734e06d103614d18e226d65c&query='"+movieSearchname+"&callback=?"
 , function(json) {
 	console.log(json);
 	console.log("title: " + json.results[0].title);
 	console.log("release_date substring to release year: " + (json.results[0].release_date).substring(0,4));
 	console.log("posterURL: " + (imageURLprefix + json.results[0].poster_path));
 	imageURLfinal = imageURLprefix + json.results[0].poster_path;
-	$("#poster").html("<img src=imageURLfinal >");
+	console.log("imageURLfinal: " + imageURLfinal);
+	$("#poster").html('<img src=' + imageURLfinal +' >');
 	});
  });
 
