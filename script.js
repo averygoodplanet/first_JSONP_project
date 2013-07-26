@@ -6,8 +6,7 @@ $(document).ready(function(){
   var movieId = null;
   
    //testing API calls for 1st movie returned on movie name search using ".../3/search/movie?api_key=###&query='movie name'..."
-   $.getJSON("https://api.themoviedb.org/3/search/movie?api_key=75d3deb3734e06d103614d18e226d65c&query='"+movieSearchname+"&callback=?"
-, function(json) {
+   $.getJSON("https://api.themoviedb.org/3/search/movie?api_key=75d3deb3734e06d103614d18e226d65c&query='"+movieSearchname+"&callback=?", function(json) {
 	console.log(json);
 	console.log("title: " + json.results[0].title);
 	console.log("release_date substring to release year: " + (json.results[0].release_date).substring(0,4));
@@ -30,11 +29,17 @@ $(document).ready(function(){
 			for(var i = 0; i < 4; i++){
 				console.log("The " +(i+1)+"th cast member: "+json.cast[i].name);
 			}
-
+				//getting "basic movie information" via /3/movie/{id}
+				$.getJSON("https://api.themoviedb.org/3/movie/" + movieId + "?api_key=75d3deb3734e06d103614d18e226d65c&callback=?", function(json) {
+				console.log(json);
+				console.log("Overview: "+json.overview);
+				console.log("Tagline: "+json.tagline);
+				});
 			});
-	});
 	
 	console.log("Hey:"+movieId); // Was the global variable changed?--No. Something to do with asynchronous nature 
 	//of getJSON?? 
 
- });
+	});
+
+});
