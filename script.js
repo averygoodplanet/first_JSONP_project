@@ -2,7 +2,7 @@ $(document).ready(function(){
    
   var imageURLprefix = "http://d3gtl9l2a4fn1j.cloudfront.net/t/p/w185";
   var imageURLfinal = "";
-  var movieSearchname= "Howard the Duck";
+  var movieSearchname= "Gunsmoke";
   var movieId = null;
   
    //testing API calls for 1st movie returned on movie name search using ".../3/search/movie?api_key=###&query='movie name'..."
@@ -22,8 +22,16 @@ $(document).ready(function(){
 			//this has to be nested per http://stackoverflow.com/questions/1739800/variables-set-during-getjson-function-only-accessible-within-function
 			$.getJSON("https://api.themoviedb.org/3/movie/" + movieId + "/casts?api_key=75d3deb3734e06d103614d18e226d65c&callback=?", function(json) {
 			console.log(json);
+			//get first cast member
+			console.log("First cast member: "+ json.cast[0].name);
+				//get first four (4) cast members--this is what "The Movie Database" shows as Starring.
+				for(var i = 0; i < 4; i++){
+					console.log("The " +(i+1)+"th cast member: "+json.cast[i].name);
+				}
 			});
 	});
 	
+	console.log("Hey:"+movieId); // Was the global variable changed?--No. Something to do with asynchronous nature 
+	//of getJSON?? 
 
  });
