@@ -2,7 +2,7 @@ $(document).ready(function(){
    
   var imageURLprefix = "http://d3gtl9l2a4fn1j.cloudfront.net/t/p/w185";
   var imageURLfinal = "";
-  var movieSearchname= "Gunsmoke";
+  var movieSearchname= "Top Gun";
   var movieId = null;
   
    //testing API calls for 1st movie returned on movie name search using ".../3/search/movie?api_key=###&query='movie name'..."
@@ -15,6 +15,8 @@ $(document).ready(function(){
 	imageURLfinal = imageURLprefix + json.results[0].poster_path;
 	console.log("imageURLfinal: " + imageURLfinal);
 	$("#poster").html('<img src=' + imageURLfinal +' >');
+	console.log("vote_average: "+json.results[0].vote_average);
+	console.log("vote_count: "+json.results[0].vote_count);
 	movieId = json.results[0].id;
 	console.log("movieId: "+ movieId);
 	//retrieved the movieId from movie name search
@@ -25,9 +27,10 @@ $(document).ready(function(){
 			//get first cast member
 			console.log("First cast member: "+ json.cast[0].name);
 				//get first four (4) cast members--this is what "The Movie Database" shows as Starring.
-				for(var i = 0; i < 4; i++){
-					console.log("The " +(i+1)+"th cast member: "+json.cast[i].name);
-				}
+			for(var i = 0; i < 4; i++){
+				console.log("The " +(i+1)+"th cast member: "+json.cast[i].name);
+			}
+
 			});
 	});
 	
