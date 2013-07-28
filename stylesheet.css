@@ -4,34 +4,75 @@ AUTHOR: Peter Himmelreich
 		averygoodplanet.com
 */
 
+html { 
+  /*image free for personal use from http://www.stockvault.net/photo/96350/old-television */
+  background: url(images/old_television.jpg) no-repeat center center fixed; 
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+
+h3 {
+	font-family: "Hoefler Text", "Baskerville old face", Garamond, "Times New Roman", serif;
+}
+
 #center_wrapper {
+	background-color: #EEEEEE; 
 	width: 980px;
 	margin: auto;
+	min-height: 98vh;
+	border-radius: 5px;
 }
 
 div {
+/*
 	border: 1px solid black;
+*/
 }
 
-#input_div {
+.movie_div {
+	width: 470px;
+	margin-top: 20px;
+	margin-left: 10px;
+	margin-bottom: 10px;
+	background-color: #BB1111;
+	border-radius: 7px;
+}
+
+.poster {
 	float: left;
-	margin-top: 60px;
-	margin-left: 60px;
+	margin: 10px;
 }
 
-#poster {
-	float: right;
-	margin-top: 30px;
-	margin-right: 60px;
+.movie_text {
+	float: left;
+	width: 255px;
+	margin-right: 10px;
 }
 
-#yelp_div {
-	float: right;
+.title {
+	text-align: center;
+	font-family: "Century Gothic", CenturyGothic, AppleGothic, sans-serif;
+}
+
+.tagline {
+	text-align: center;
+	font-family: "Goudy Old Style", Garamond, "Big Caslon", "Times New Roman", serif;
+	font-style: italic;
+}
+
+.trailer {
+	font-size: 20px;
+	color: #AAAA99;
+}
+
+.overview_div {
 	clear: both;
-	margin-top: 40px;
-	margin-right: 60px;
 }
 
-#zipcode {
-	margin-left: 25px;
+.overview_style {
+	padding-left: 20px;
+	text-align: justify;
+	min-height: 40px;
 }

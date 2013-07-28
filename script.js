@@ -15,7 +15,7 @@ $(document).ready(function(){
 	console.log("posterURL: " + (imageURLprefix + json.results[0].poster_path));
 	imageURLfinal = imageURLprefix + json.results[0].poster_path;
 	console.log("imageURLfinal: " + imageURLfinal);
-	$("#poster").html('<img src=' + imageURLfinal +' >');
+	$(".poster").html('<img src=' + imageURLfinal +' >');
 	console.log("vote_average: "+json.results[0].vote_average);
 	console.log("vote_count: "+json.results[0].vote_count);
 	movieId = json.results[0].id;
