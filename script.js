@@ -2,7 +2,7 @@ $(document).ready(function(){
    
   var imageURLprefix = "http://d3gtl9l2a4fn1j.cloudfront.net/t/p/w185";
   var imageURLfinal = "";
-  var movieSearchname= "Top Gun";
+  var movieSearchname= "Fight Club";
   var movieId = null;
   
    //testing API calls for 1st movie returned on movie name search using ".../3/search/movie?api_key=###&query='movie name'..."
@@ -28,6 +28,11 @@ $(document).ready(function(){
 				//get first four (4) cast members--this is what "The Movie Database" shows as Starring.
 			for(var i = 0; i < 4; i++){
 				console.log("The " +(i+1)+"th cast member: "+json.cast[i].name);
+			}
+			for(var i = 0; i < json.crew.length; i++){
+				if(json.crew[i].job == "Director"){
+					console.log("Director: "+json.crew[i].name);
+				}
 			}
 				//getting "basic movie information" via /3/movie/{id}
 				$.getJSON("https://api.themoviedb.org/3/movie/" + movieId + "?api_key=75d3deb3734e06d103614d18e226d65c&callback=?", function(json) {
