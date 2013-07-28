@@ -68,9 +68,13 @@ div {
 }
 
 .tagline {
-	text-align: center;
+	text-align: justify;
 	font-family: "Goudy Old Style", Garamond, "Big Caslon", "Times New Roman", serif;
 	font-style: italic;
+}
+
+.starring {
+	list-style: none;
 }
 
 .trailer {
@@ -83,7 +87,9 @@ div {
 }
 
 .overview_style {
-	padding-left: 20px;
+	padding: 30px;
 	text-align: justify;
 	min-height: 40px;
+	font-size: 18px;
+	font-weight:lighter;
 }
