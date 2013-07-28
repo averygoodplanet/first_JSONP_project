@@ -2,8 +2,10 @@ $(document).ready(function(){
    
   var imageURLprefix = "http://d3gtl9l2a4fn1j.cloudfront.net/t/p/w185";
   var imageURLfinal = "";
-  var movieSearchname= "Fight Club";
+  var movieSearchname = "Fight Club";
   var movieId = null;
+  var trailerURLprefix = "http://www.youtube.com/watch?v=";
+  var trailerURLfinal = "";  
   
    //testing API calls for 1st movie returned on movie name search using ".../3/search/movie?api_key=###&query='movie name'..."
    $.getJSON("https://api.themoviedb.org/3/search/movie?api_key=75d3deb3734e06d103614d18e226d65c&query='"+movieSearchname+"&callback=?", function(json) {
@@ -39,6 +41,14 @@ $(document).ready(function(){
 				console.log(json);
 				console.log("Overview: "+json.overview);
 				console.log("Tagline: "+json.tagline);
+					//getting trailer information via /3/movie/{id}/trailers
+					$.getJSON("https://api.themoviedb.org/3/movie/" + movieId + "/trailers?api_key=75d3deb3734e06d103614d18e226d65c&callback=?", function(json) {
+					console.log(json);
+					console.log("youtube trailer source: "+json.youtube[0].source);
+					trailerURLfinal = trailerURLprefix + json.youtube[0].source;
+					console.log("trailerURLfinal: "+trailerURLfinal);
+					});
+				
 				});
 			});
 	
