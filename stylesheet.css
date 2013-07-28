@@ -18,7 +18,7 @@ h3 {
 }
 
 #center_wrapper {
-	background-color: #EEEEEE; 
+	background-image: url(images/static.jpg);
 	width: 980px;
 	margin: auto;
 	min-height: 98vh;
@@ -36,8 +36,19 @@ div {
 	margin-top: 20px;
 	margin-left: 10px;
 	margin-bottom: 10px;
-	background-color: #BB1111;
 	border-radius: 7px;
+	/* CSS Box Shadow from http://css-tricks.com/snippets/css/css-box-shadow/ */
+	/* modified using http://css3gen.com/box-shadow/ */
+	-moz-box-shadow: -12px -12px 30px #FAFAFA;
+	-webkit-box-shadow: -12px -12px 30px #FAFAFA;
+	box-shadow: -12px -12px 30px #FAFAFA;
+	/* Added gradient using http://www.css3.me/ */
+	background-image: -moz-linear-gradient(top, #ffc21f, #ff1200);
+	background-image: -o-linear-gradient(top, #ffc21f, #ff1200);
+	background-image: -webkit-gradient(linear, center top, center bottom, from(#ffc21f), to(#ff1200));
+	background-image: -webkit-linear-gradient(top, #ffc21f, #ff1200);
+	background-image: linear-gradient(top, #ffc21f, #ff1200);
+
 }
 
 .poster {
