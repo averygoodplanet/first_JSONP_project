@@ -17,11 +17,17 @@ h3 {
 	font-family: "Hoefler Text", "Baskerville old face", Garamond, "Times New Roman", serif;
 }
 
+#input_div {
+	position: fixed;
+	left: 0px;
+	top: 0px;
+}
+
 #center_wrapper {
 	background-image: url(images/static.jpg);
 	width: 980px;
 	margin: auto;
-	min-height: 98vh;
+	min-height: 100vh;
 	border-radius: 5px;
 }
 
@@ -48,6 +54,9 @@ div {
 	background-image: -webkit-gradient(linear, center top, center bottom, from(#ffc21f), to(#ff1200));
 	background-image: -webkit-linear-gradient(top, #ffc21f, #ff1200);
 	background-image: linear-gradient(top, #ffc21f, #ff1200);
+	
+	position: relative;
+	top: 20px;
 
 }
 
