@@ -2,7 +2,7 @@ $(document).ready(function(){
    
   var imageURLprefix = "http://d3gtl9l2a4fn1j.cloudfront.net/t/p/w185";
   var imageURLfinal = "";
-  var movieSearchname = "Fight Club";
+  var movieSearchname = "Howard the Duck";
   var movieId = null;
   var trailerURLprefix = "http://www.youtube.com/watch?v=";
   var trailerURLfinal = "";  

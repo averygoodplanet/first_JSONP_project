@@ -75,19 +75,33 @@ div {
 
 .starring {
 	list-style: none;
+	margin: -10px 0px 0px 35px;
+	font-size: 20px;
+}
+
+.avg_votes {
+	margin-left: 20px;
+}
+
+.director {
+	margin-left: 20px;
 }
 
 .trailer {
 	font-size: 20px;
 	color: #AAAA99;
+	margin-left: 160px;
+	padding-bottom: 10px;
+	display: block;
 }
 
-.overview_div {
+.bottom_half {
 	clear: both;
 }
 
 .overview_style {
-	padding: 30px;
+	padding: 0px 30px;
+	margin-bottom: 10px;
 	text-align: justify;
 	min-height: 40px;
 	font-size: 18px;
