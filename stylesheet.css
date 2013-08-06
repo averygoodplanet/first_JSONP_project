@@ -18,9 +18,25 @@ h3 {
 }
 
 #input_div {
+	width: 240px;
+	height: 70px;
+	background-color: gold;
+	border-radius: 3px;
 	position: fixed;
-	left: 0px;
-	top: 0px;
+	left: 290px;
+	top: 30px;
+}
+
+#input_div label {
+	display: block;
+	margin-left: 20px;
+	margin-top: 10px;
+	margin-bottom: 5px;
+}
+
+#input_div input {
+	margin-left: 20px;
+	font-size: 14px;
 }
 
 #center_wrapper {
