@@ -74,4 +74,12 @@ $(document).ready(function(){
 	$("#search").val("");
   });
 	
+  $("#search").keypress(function (event) { //Calls callAPI when ENTER pressed in input box, then clears input box.
+    if(event.which == 13) { //13 is for ENTER key
+		var movieSearchname = document.getElementById("search").value;
+		callAPI(movieSearchname);
+		$(this).val("");
+	}
+	});
+	
 });
