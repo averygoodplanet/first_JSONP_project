@@ -66,7 +66,12 @@ $(document).ready(function(){
 
 	});
 	}
-	
-  callAPI("Dirty Dancing");
+
+  $("#submit").on('click', function () { //Calls callAPI when #submit button ('Go!') is clicked and then clears the input field.
+	var movieSearchname = document.getElementById("search").value;
+	console.log("in .on function, movieSearchname: "+movieSearchname);
+	callAPI(movieSearchname);
+	$("#search").val("");
+  });
 	
 });
