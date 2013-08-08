@@ -33,6 +33,7 @@ $(document).ready(function(){
 				//get first cast member
 				console.log("First cast member: "+ json.cast[0].name);
 					//get first four (4) cast members--this is what "The Movie Database" shows as Starring.
+				$(".starring > li").remove(); //removing previous cast members.
 				for(var i = 0; i < 4; i++){
 					console.log("The " +(i+1)+"th cast member: "+json.cast[i].name);
 					$(".starring").append('<li>'+json.cast[i].name+'</li');
