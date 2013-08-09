@@ -18,13 +18,8 @@ var testCallAPI = function (movieSearchname) {
 			movie.posterURL = imageURLprefix + json.results[i].poster_path;
 			movie.averageVotes = json.results[i].vote_average;
 			movie.movieId = json.results[i].id;
-			arrayOfmovies.push(movie);
-		}
-		console.log(arrayOfmovies);
-		//When above code executed by itself (without other getJSON requests) it correctly creates array of movies.
-		});
-		/*		
-				$.getJSON("https://api.themoviedb.org/3/movie/" + movieId + "/casts?api_key=75d3deb3734e06d103614d18e226d65c&callback=?", function(json) {
+			arrayOfmovies.push(movie);	
+				$.getJSON("https://api.themoviedb.org/3/movie/" + movie.movieId + "/casts?api_key=75d3deb3734e06d103614d18e226d65c&callback=?", function(json) {
 				console.log(json);
 				//get first cast member
 				console.log("First cast member: "+ json.cast[0].name);
@@ -41,7 +36,7 @@ var testCallAPI = function (movieSearchname) {
 					}
 				}
 					//getting "basic movie information" via /3/movie/{id}
-					$.getJSON("https://api.themoviedb.org/3/movie/" + movieId + "?api_key=75d3deb3734e06d103614d18e226d65c&callback=?", function(json) {
+					$.getJSON("https://api.themoviedb.org/3/movie/" + movie.movieId + "?api_key=75d3deb3734e06d103614d18e226d65c&callback=?", function(json) {
 					console.log(json);
 					console.log("Overview: "+json.overview);
 					$(".overview_style").html("Overview: "+json.overview);
@@ -58,9 +53,10 @@ var testCallAPI = function (movieSearchname) {
 					
 					});
 				});
-
-	}); */
-	}
+		//if(i == 6){break;}		
+		}
+		});
+		}
   
 testCallAPI("Rambo");
 
