@@ -8,10 +8,11 @@ $(document).ready(function(){
   var globalMoviearray = [];
   
 var testCallAPI = function (movieSearchname) {
-	    $.getJSON("https://api.themoviedb.org/3/search/movie?api_key=75d3deb3734e06d103614d18e226d65c&query='"+movieSearchname+"&callback=?", function(json) {
+	    $.getJSON("https://api.themoviedb.org/3/search/movie?api_key=75d3deb3734e06d103614d18e226d65c&query='"+movieSearchname+"&callback=?", function(json) { 
+		//Initial search by movie name to return movie IDs
 		var n = json.results.length;
 		var arrayOfmovies = [];
-		for (var i = 0; i < n; i++){
+		for (var i = 0; i < n; i++){ //Looping over each movie ID that was returned (and storing pieces of data provided by this API call).
 			var movie = {};
 			movie.title = json.results[i].title;
 			movie.releaseYear = ((json.results[i].release_date).substring(0,4));
@@ -20,10 +21,11 @@ var testCallAPI = function (movieSearchname) {
 			movie.movieId = json.results[i].id;
 			arrayOfmovies.push(movie);	
 				$.getJSON("https://api.themoviedb.org/3/movie/" + movie.movieId + "/casts?api_key=75d3deb3734e06d103614d18e226d65c&callback=?", function(json) {
+				console.log("**Test of whether still movie.title: "+movie.title);
 				console.log(json);
 				//get first cast member
 				console.log("First cast member: "+ json.cast[0].name);
-					//get first four (4) cast members--this is what "The Movie Database" shows as Starring.
+					//get first four (4) cast members--this is what "The Movie Database" shows as "Starring".
 				$(".starring > li").remove(); //removing previous cast members.
 				for(var i = 0; i < 4; i++){
 					console.log("The " +(i+1)+"th cast member: "+json.cast[i].name);
