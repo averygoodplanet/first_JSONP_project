@@ -11,6 +11,7 @@ var testCallAPI = function (movieSearchname) {
 	    $.getJSON("https://api.themoviedb.org/3/search/movie?api_key=75d3deb3734e06d103614d18e226d65c&query='"+movieSearchname+"&callback=?", function(json) { 
 		//Initial search by movie name to return movie IDs
 		var n = json.results.length;
+		var completedProcess = 0;
 		var arrayOfmovies = [];
 		for (var i = 0; i < n; i++){ //Looping over each movie ID that was returned (and storing pieces of data provided by this API call).
 			var movie = {};
@@ -19,7 +20,7 @@ var testCallAPI = function (movieSearchname) {
 			movie.posterURL = imageURLprefix + json.results[i].poster_path;
 			movie.averageVotes = json.results[i].vote_average;
 			movie.movieId = json.results[i].id;
-			arrayOfmovies.push(movie);	
+			arrayOfmovies.push(movie);
 				$.getJSON("https://api.themoviedb.org/3/movie/" + movie.movieId + "/casts?api_key=75d3deb3734e06d103614d18e226d65c&callback=?", function(json) {
 				console.log("**Test of whether still movie.title: "+movie.title);
 				console.log(json);
@@ -33,23 +34,23 @@ var testCallAPI = function (movieSearchname) {
 				}
 				for(var i = 0; i < json.crew.length; i++){
 					if(json.crew[i].job == "Director"){
-						console.log("Director:  "+json.crew[i].name);
+						//console.log("Director:  "+json.crew[i].name);
 						$(".director").html("Director: "+json.crew[i].name);
 					}
 				}
 					//getting "basic movie information" via /3/movie/{id}
 					$.getJSON("https://api.themoviedb.org/3/movie/" + movie.movieId + "?api_key=75d3deb3734e06d103614d18e226d65c&callback=?", function(json) {
-					console.log(json);
-					console.log("Overview: "+json.overview);
+					//console.log(json);
+					//console.log("Overview: "+json.overview);
 					$(".overview_style").html("Overview: "+json.overview);
-					console.log("Tagline: "+json.tagline);
+					//console.log("Tagline: "+json.tagline);
 					$(".tagline").html('"'+json.tagline+'"');
 						//getting trailer information via /3/movie/{id}/trailers
 						$.getJSON("https://api.themoviedb.org/3/movie/" + movieId + "/trailers?api_key=75d3deb3734e06d103614d18e226d65c&callback=?", function(json) {
-						console.log(json);
-						console.log("youtube trailer source: "+json.youtube[0].source);
+						//console.log(json);
+						//console.log("youtube trailer source: "+json.youtube[0].source);
 						trailerURLfinal = trailerURLprefix + json.youtube[0].source;
-						console.log("trailerURLfinal: "+trailerURLfinal);
+						//console.log("trailerURLfinal: "+trailerURLfinal);
 						$(".trailer").attr('href', trailerURLfinal);
 						});
 					
@@ -57,6 +58,7 @@ var testCallAPI = function (movieSearchname) {
 				});
 		//if(i == 6){break;}		
 		}
+		//console.log(arrayOfmovies);
 		});
 		}
   
