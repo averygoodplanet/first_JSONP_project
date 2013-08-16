@@ -1,5 +1,6 @@
 $(document).ready(){
 	var window.m = function(){
+		this.sample = "Sample variable";
 		this.imgBaseUri = "";
 		this.movieArr = [];
 		this.returnIds = 0;
@@ -97,4 +98,6 @@ $(document).ready(){
 
 		}
 	};
+
+
 };
