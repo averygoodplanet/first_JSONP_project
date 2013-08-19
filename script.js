@@ -10,7 +10,8 @@ $(document).ready(function(){
 	  getTrailerDone = false,
 	  getCastDone = false;
   var taglineCounter = 0,
-	  trailerCounter = 0;
+	  trailerCounter = 0,
+	  castCounter = 0;
   
   function MovieObject(id) {
 	this.id = id;
@@ -121,8 +122,26 @@ $(document).ready(function(){
 		//logGlobalMovieArray();
 	};
 	
-	function getCast() {
-	
+	function getCast() { // (Promise flag not working; data upload is working) API call to get top four cast and director.
+		castCounter = 0;
+		for(var i = 0; i < numberOfMovies; i++){
+			var movieID = globalMovieArray[i].id;
+				$.getJSON("https://api.themoviedb.org/3/movie/" + movieID + "/casts?api_key=75d3deb3734e06d103614d18e226d65c&callback=?", function(json) {
+					for(var b = 0; b < 4; b++){ //first 4 cast members are "starring" roles.
+						if(json.cast[b]){ //if there's a json cast object there, upload it.
+						globalMovieArray[castCounter].cast[b] = json.cast[b].name;
+						}
+					}
+					for(var c = 0; c < json.crew.length; c++){
+						if(json.crew[c].job == "Director"){
+							globalMovieArray[castCounter].director = json.crew[c].name;
+						}
+					}
+					castCounter += 1;
+				});
+		}
+		getCastDone = true;
+		//logGlobalMovieArray();
 	};
 	
 	function startStage2APICalls() {
@@ -130,7 +149,7 @@ $(document).ready(function(){
 		getTagline();
 		getTrailer();
 		getCast();
-		logGlobalMovieArray();
+		//logGlobalMovieArray();
 	};
    
    function displayHTML() {
