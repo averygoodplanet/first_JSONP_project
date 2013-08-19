@@ -5,8 +5,10 @@ $(document).ready(function(){
   var globalMovieArray = [];
   var numberOfMovies = null;
   var searchedName = null;
-  var getGeneralDone, getTaglineDone, getTrailerDone, getCastDone = false; 
-  console.log(
+  var getGeneralDone = false,
+	  getTaglineDone = false,
+	  getTrailerDone = false,
+	  getCastDone = false; 
   
   function MovieObject(id) {
 	this.id = id;
