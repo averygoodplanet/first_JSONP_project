@@ -12,7 +12,20 @@ $(document).ready(function(){
   var taglineCounter = 0,
 	  trailerCounter = 0,
 	  castCounter = 0;
-  
+
+  function resetGlobalVars() {
+		globalMovieArray = [];
+		numberOfMovies = null;
+		searchedName = null;
+		getGeneralDone = false;
+		getTaglineDone = false;
+		getTrailerDone = false;
+		getCastDone = false;
+		taglineCounter = 0;
+		trailerCounter = 0;
+		castCounter = 0;
+	};
+	  
   function MovieObject(id) {
 	this.id = id;
 	this.title = "";
@@ -58,6 +71,7 @@ $(document).ready(function(){
   });	
   
    function getMovieIDs (searchedName) { //Get movie IDs from searchedName and create movie objects with proper movieID but blank other properties. Then callback to startStage2APICalls();
+		resetGlobalVars();
 		$.getJSON("https://api.themoviedb.org/3/search/movie?api_key=75d3deb3734e06d103614d18e226d65c&query='"+searchedName+"&callback=?", function (json) {
 			makeMovieObjects(json);
 			startStage2APICalls(); // This is a callback.
