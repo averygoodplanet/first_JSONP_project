@@ -8,7 +8,8 @@ $(document).ready(function(){
   var getGeneralDone = false,
 	  getTaglineDone = false,
 	  getTrailerDone = false,
-	  getCastDone = false; 
+	  getCastDone = false;
+  var taglineCounter = 0;
   
   function MovieObject(id) {
 	this.id = id;
@@ -82,22 +83,25 @@ $(document).ready(function(){
 		});
 	};
 	
-	function getTagline () { // (ERROR)API call for overview and tagline.
-		console.log("globalMovieArray[7].id: "+globalMovieArray[7].id);
-		console.log("globalMovieArray[7].overview: "+globalMovieArray[7].overview);
-		//**ERROR: Not sure why getTagline() is not working and is returning error in Chrome console of "Cannot set property 'overview' of undefined when have confirmed both that:
-		// globalMovieArray[7].id for Rambo and json.overview are defined prior to the getJSON call below.
+	function getTagline () { // (Promise flag not working; data upload is working) API call for overview and tagline.
 		for(var i = 0; i < numberOfMovies; i++){
 			var movieID = globalMovieArray[i].id;
+			taglineCounter = i;
 			$.getJSON("https://api.themoviedb.org/3/movie/" + movieID + "?api_key=75d3deb3734e06d103614d18e226d65c&callback=?", function(json) {
 				//json.overview is correct format for accessing overview from json.
-				globalMovieArray[i].overview = json.overview;
-				globalMovieArray[i].tagline = json.tagline;
+				//var i from for-loop cannot be accessed here and returns globalMovieArray[i] as undefined error.
+				//global taglineCounter works to load this info to globalMovieArray
+				globalMovieArray[taglineCounter].overview = json.overview;
+				console.log("globalMovieArray[taglineCounter].overview: "+globalMovieArray[taglineCounter].overview);
+				globalMovieArray[taglineCounter].tagline = json.tagline;
+				console.log("globalMovieArray[taglineCounter].tagline: "+globalMovieArray[taglineCounter].tagline);
 				console.log("getTaglineDone: "+getTaglineDone);
-				//let's see if getTaglineDone = true (below) is really waiting for the getJSON to finish.
 			});
 		}
+		//**These (getTaglineDone = true & logGlobalMovieArray) are firing before the for loop of getJSON requests are complete.
+		//This is probably a problem related to asynchronous programming.
 		getTaglineDone = true;
+		logGlobalMovieArray();
 	};
 	
 	function getTrailer () {
