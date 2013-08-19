@@ -70,7 +70,7 @@ $(document).ready(function(){
 		}
    };
 
-	function getGeneral () {
+	function getGeneral () { //API call for title, releaseYear, etc.
 		$.getJSON("https://api.themoviedb.org/3/search/movie?api_key=75d3deb3734e06d103614d18e226d65c&query='"+searchedName+"&callback=?", function (json) {
 			for (var i = 0; i < numberOfMovies; i++) {
 				globalMovieArray[i].title = json.results[i].title;
@@ -82,12 +82,19 @@ $(document).ready(function(){
 		});
 	};
 	
-	function getTagline () {
+	function getTagline () { // (ERROR)API call for overview and tagline.
+		console.log("globalMovieArray[7].id: "+globalMovieArray[7].id);
+		console.log("globalMovieArray[7].overview: "+globalMovieArray[7].overview);
+		//**ERROR: Not sure why getTagline() is not working and is returning error in Chrome console of "Cannot set property 'overview' of undefined when have confirmed both that:
+		// globalMovieArray[7].id for Rambo and json.overview are defined prior to the getJSON call below.
 		for(var i = 0; i < numberOfMovies; i++){
 			var movieID = globalMovieArray[i].id;
 			$.getJSON("https://api.themoviedb.org/3/movie/" + movieID + "?api_key=75d3deb3734e06d103614d18e226d65c&callback=?", function(json) {
+				//json.overview is correct format for accessing overview from json.
 				globalMovieArray[i].overview = json.overview;
 				globalMovieArray[i].tagline = json.tagline;
+				console.log("getTaglineDone: "+getTaglineDone);
+				//let's see if getTaglineDone = true (below) is really waiting for the getJSON to finish.
 			});
 		}
 		getTaglineDone = true;
