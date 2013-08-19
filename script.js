@@ -6,6 +6,7 @@ $(document).ready(function(){
   var numberOfMovies = null;
   var searchedName = null;
   var getGeneralDone, getTaglineDone, getTrailerDone, getCastDone = false; 
+  console.log(
   
   function MovieObject(id) {
 	this.id = id;
