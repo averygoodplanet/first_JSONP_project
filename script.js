@@ -9,7 +9,8 @@ $(document).ready(function(){
 	  getTaglineDone = false,
 	  getTrailerDone = false,
 	  getCastDone = false;
-  var taglineCounter = 0;
+  var taglineCounter = 0,
+	  trailerCounter = 0;
   
   function MovieObject(id) {
 	this.id = id;
@@ -92,20 +93,32 @@ $(document).ready(function(){
 				//var i from for-loop cannot be accessed here and returns globalMovieArray[i] as undefined error.
 				//global taglineCounter works to load this info to globalMovieArray
 				globalMovieArray[taglineCounter].overview = json.overview;
-				console.log("globalMovieArray[taglineCounter].overview: "+globalMovieArray[taglineCounter].overview);
+				//console.log("globalMovieArray[taglineCounter].overview: "+globalMovieArray[taglineCounter].overview);
 				globalMovieArray[taglineCounter].tagline = json.tagline;
-				console.log("globalMovieArray[taglineCounter].tagline: "+globalMovieArray[taglineCounter].tagline);
-				console.log("getTaglineDone: "+getTaglineDone);
+				//console.log("globalMovieArray[taglineCounter].tagline: "+globalMovieArray[taglineCounter].tagline);
+				//console.log("getTaglineDone: "+getTaglineDone);
 			});
 		}
 		//**These (getTaglineDone = true & logGlobalMovieArray) are firing before the for loop of getJSON requests are complete.
 		//This is probably a problem related to asynchronous programming.
-		getTaglineDone = true;
-		logGlobalMovieArray();
+		getTaglineDone = true; //this is firing before the getJSON data is all returned.
+		//logGlobalMovieArray();
 	};
 	
-	function getTrailer () {
-	
+	function getTrailer () { // (Promise flag not working; data upload is working) API call for overview and tagline.
+		for(var i = 0; i < numberOfMovies; i++){
+			var movieID = globalMovieArray[i].id;
+			trailerCounter = i;
+			$.getJSON("https://api.themoviedb.org/3/movie/" + movieID + "/trailers?api_key=75d3deb3734e06d103614d18e226d65c&callback=?", function(json) {
+					if(json.youtube[0]){ //if there is a trailer, store it in movie object within globalMovieArray.
+					var	trailerURLfinal = trailerURLprefix + json.youtube[0].source
+					globalMovieArray[trailerCounter].trailer = trailerURLfinal;
+					//console.log("globalMovieArray[trailerCounter].trailer: "+globalMovieArray[trailerCounter].trailer);
+					}
+			});
+		}
+		getTrailerDone = true; //this is firing before the getJSON data is all returned.
+		//logGlobalMovieArray();
 	};
 	
 	function getCast() {
@@ -117,6 +130,7 @@ $(document).ready(function(){
 		getTagline();
 		getTrailer();
 		getCast();
+		logGlobalMovieArray();
 	};
    
    function displayHTML() {
