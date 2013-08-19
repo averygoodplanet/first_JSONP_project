@@ -16,9 +16,27 @@ $(document).ready(function(){
 	this.cast = [];
 	this.director = "";
 	this.tagline = "";
+	this.overview = "";
 	this.trailer = "";
   }
-   
+  
+  function logGlobalMovieArray () {
+	for(var i = 0; i < numberOfMovies; i++){
+		var m = globalMovieArray[i];
+		console.log("i: "+i);
+		console.log("id: "+m.id);
+		console.log("title: "+m.title);
+		console.log("releaseYear: "+m.releaseYear);
+		console.log("posterURL: "+m.posterURL);
+		console.log("averageVotes: "+m.averageVotes);
+		console.log("cast: "+m.cast);
+		console.log("director: "+m.director);
+		console.log("tagline: "+m.tagline);
+		console.log("overview: "+m.overview);
+		console.log("trailer: "+m.trailer);
+	}
+  };
+  
   $("#search").keypress(function (event) { //Calls getMovieIDs when ENTER pressed in input box, then clears input box.
     if(event.which == 13) { //13 is for ENTER key
 		searchedName = document.getElementById("search").value;
@@ -34,6 +52,7 @@ $(document).ready(function(){
   });	
   
    function getMovieIDs (searchedName) { //Get movie IDs from searchedName and create movie objects with proper movieID but blank other properties. Then callback to startStage2APICalls();
+		console.log("globalMovieArray.length: "+globalMovieArray.length);
 		$.getJSON("https://api.themoviedb.org/3/search/movie?api_key=75d3deb3734e06d103614d18e226d65c&query='"+searchedName+"&callback=?", function (json) {
 			makeMovieObjects(json);
 			startStage2APICalls(); // This is a callback.
@@ -62,7 +81,14 @@ $(document).ready(function(){
 	};
 	
 	function getTagline () {
-	
+		for(var i = 0; i < numberOfMovies; i++){
+			var movieID = globalMovieArray[i].id;
+			$.getJSON("https://api.themoviedb.org/3/movie/" + movieID + "?api_key=75d3deb3734e06d103614d18e226d65c&callback=?", function(json) {
+				globalMovieArray[i].overview = json.overview;
+				globalMovieArray[i].tagline = json.tagline;
+			});
+		}
+		getTaglineDone = true;
 	};
 	
 	function getTrailer () {
