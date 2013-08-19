@@ -52,7 +52,6 @@ $(document).ready(function(){
   });	
   
    function getMovieIDs (searchedName) { //Get movie IDs from searchedName and create movie objects with proper movieID but blank other properties. Then callback to startStage2APICalls();
-		console.log("globalMovieArray.length: "+globalMovieArray.length);
 		$.getJSON("https://api.themoviedb.org/3/search/movie?api_key=75d3deb3734e06d103614d18e226d65c&query='"+searchedName+"&callback=?", function (json) {
 			makeMovieObjects(json);
 			startStage2APICalls(); // This is a callback.
@@ -100,7 +99,6 @@ $(document).ready(function(){
 	};
 	
 	function startStage2APICalls() {
-		console.log("In startStage2APICalls function.");
 		getGeneral();
 		getTagline();
 		getTrailer();
