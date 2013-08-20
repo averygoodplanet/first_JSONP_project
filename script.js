@@ -112,6 +112,9 @@ $(document).ready(function(){
 				globalMovieArray[taglineCounter].tagline = json.tagline;
 				//console.log("globalMovieArray[taglineCounter].tagline: "+globalMovieArray[taglineCounter].tagline);
 				//console.log("getTaglineDone: "+getTaglineDone);
+				if(taglineCounter === numberOfMovies){
+					getTaglineDone = true;
+				}
 			});
 		}
 		//**These (getTaglineDone = true & logGlobalMovieArray) are firing before the for loop of getJSON requests are complete.
@@ -130,10 +133,12 @@ $(document).ready(function(){
 					globalMovieArray[trailerCounter].trailer = trailerURLfinal;
 					//console.log("globalMovieArray[trailerCounter].trailer: "+globalMovieArray[trailerCounter].trailer);
 					}
+					if(trailerCounter === numberOfMovies){
+						getTrailerDone = true;
+					}
 			});
 		}
-		getTrailerDone = true; //this is firing before the getJSON data is all returned.
-		//logGlobalMovieArray();
+		//this is firing before the getJSON data is all returned.
 	};
 	
 	function getCast() { // (Promise flag not working; data upload is working) API call to get top four cast and director.
@@ -151,11 +156,13 @@ $(document).ready(function(){
 							globalMovieArray[castCounter].director = json.crew[c].name;
 						}
 					}
-					castCounter += 1;
+					castCounter += 1; //This is the callback--happens when the call is complete.
+					if(castCounter === numberOfMovies){
+						getCastDone = true;
+					}
 				});
+		//This line runs before the callbacks come back.
 		}
-		getCastDone = true;
-		//logGlobalMovieArray();
 	};
 	
 	function startStage2APICalls() {
@@ -163,11 +170,34 @@ $(document).ready(function(){
 		getTagline();
 		getTrailer();
 		getCast();
+		waitForPromises();
 		//logGlobalMovieArray();
 	};
    
    function displayHTML() {//Build this after coordinate API asynchronous checkpoints.
 		console.log("In displayHTML function.");
    };
-   	 
+   	
+	//exclusive-or
+	// if ( ( x && y ) || (!x && !y) ){ } else { code here}
+	
+	function checkPromises() {
+		if(getGeneralDone && getTaglineDone && getTrailerDone && getCastDone) {
+			return true;
+		} 
+		return false;
+	};
+	
+	function waitForPromises() {
+		console.log("checkPromises():"+checkPromises());
+		if(checkPromises()){
+			logGlobalMovieArray();
+			displayHTML();
+		} else { //if not, wait 1/4 second and call itself;
+			setTimeout(function () {
+				waitForPromises();
+			}, 250);
+		} 
+	};
+	
 });
