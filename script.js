@@ -166,7 +166,7 @@ $(document).ready(function(){
 		//logGlobalMovieArray();
 	};
    
-   function displayHTML() {
+   function displayHTML() {//Build this after coordinate API asynchronous checkpoints.
 		console.log("In displayHTML function.");
    };
    	 
