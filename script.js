@@ -5,10 +5,10 @@ $(document).ready(function(){
   var globalMovieArray = [];
   var numberOfMovies = null;
   var searchedName = null;
-  var getGeneralDone = false,
+  var getGeneralDone = true,
 	  getTaglineDone = false,
-	  getTrailerDone = false,
-	  getCastDone = false;
+	  getTrailerDone = true,
+	  getCastDone = true;
   var taglineCounter = 0,
 	  trailerCounter = 0,
 	  castCounter = 0;
@@ -71,7 +71,7 @@ $(document).ready(function(){
   });	
   
    function getMovieIDs (searchedName) { //Get movie IDs from searchedName and create movie objects with proper movieID but blank other properties. Then callback to startStage2APICalls();
-		resetGlobalVars();
+		//resetGlobalVars();
 		$.getJSON("https://api.themoviedb.org/3/search/movie?api_key=75d3deb3734e06d103614d18e226d65c&query='"+searchedName+"&callback=?", function (json) {
 			makeMovieObjects(json);
 			startStage2APICalls(); // This is a callback.
@@ -100,6 +100,7 @@ $(document).ready(function(){
 	};
 	
 	function getTagline () { // (Promise flag not working; data upload is working) API call for overview and tagline.
+		console.log("getTaglineDone begingetTagline: "+getTaglineDone);
 		for(var i = 0; i < numberOfMovies; i++){
 			var movieID = globalMovieArray[i].id;
 			taglineCounter = i;
@@ -111,16 +112,20 @@ $(document).ready(function(){
 				//console.log("globalMovieArray[taglineCounter].overview: "+globalMovieArray[taglineCounter].overview);
 				globalMovieArray[taglineCounter].tagline = json.tagline;
 				//console.log("globalMovieArray[taglineCounter].tagline: "+globalMovieArray[taglineCounter].tagline);
-				//console.log("getTaglineDone: "+getTaglineDone);
-				if(taglineCounter === numberOfMovies){
+				console.log("getTaglineDone before taglineCounter: "+getTaglineDone);
+				console.log("taglineCounter: "+taglineCounter);
+				console.log("numberOfMovies: "+numberOfMovies);
+				if((taglineCounter + 1) === numberOfMovies){
+					console.log("Firing line 121");
 					getTaglineDone = true;
+					logGlobalMovieArray();
 				}
+				
 			});
 		}
-		//**These (getTaglineDone = true & logGlobalMovieArray) are firing before the for loop of getJSON requests are complete.
-		//This is probably a problem related to asynchronous programming.
-		getTaglineDone = true; //this is firing before the getJSON data is all returned.
-		//logGlobalMovieArray();
+		console.log("Firing line 127");
+		//getTaglineDone = true; //this is firing before the getJSON data is all returned.
+		console.log("getTaglineDone@line130: "+getTaglineDone);
 	};
 	
 	function getTrailer () { // (Promise flag not working; data upload is working) API call for overview and tagline.
@@ -166,12 +171,12 @@ $(document).ready(function(){
 	};
 	
 	function startStage2APICalls() {
-		getGeneral();
+		//getGeneral();
 		getTagline();
-		getTrailer();
-		getCast();
+		//getTrailer();
+		//getCast();
+		
 		waitForPromises();
-		//logGlobalMovieArray();
 	};
    
    function displayHTML() {//Build this after coordinate API asynchronous checkpoints.
@@ -184,14 +189,14 @@ $(document).ready(function(){
 	function checkPromises() {
 		if(getGeneralDone && getTaglineDone && getTrailerDone && getCastDone) {
 			return true;
-		} 
+		}
 		return false;
 	};
 	
 	function waitForPromises() {
 		console.log("checkPromises():"+checkPromises());
 		if(checkPromises()){
-			logGlobalMovieArray();
+			//logGlobalMovieArray();
 			displayHTML();
 		} else { //if not, wait 1/4 second and call itself;
 			setTimeout(function () {
