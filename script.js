@@ -9,7 +9,8 @@ $(document).ready(function(){
 	  getTaglineDone = false,
 	  getTrailerDone = true,
 	  getCastDone = true;
-  var taglineCounter = 0,
+  var taglineStartsCounter = 0,
+	  taglineCompletesCounter = 0,
 	  trailerCounter = 0,
 	  castCounter = 0;
 
@@ -21,7 +22,8 @@ $(document).ready(function(){
 		getTaglineDone = false;
 		getTrailerDone = false;
 		getCastDone = false;
-		taglineCounter = 0;
+		taglineStartsCounter = 0;
+		taglineCompletesCounter = 0;
 		trailerCounter = 0;
 		castCounter = 0;
 	};
@@ -100,32 +102,19 @@ $(document).ready(function(){
 	};
 	
 	function getTagline () { // (Promise flag not working; data upload is working) API call for overview and tagline.
-		console.log("getTaglineDone begingetTagline: "+getTaglineDone);
 		for(var i = 0; i < numberOfMovies; i++){
 			var movieID = globalMovieArray[i].id;
-			taglineCounter = i;
+			taglineStartsCounter = i;
 			$.getJSON("https://api.themoviedb.org/3/movie/" + movieID + "?api_key=75d3deb3734e06d103614d18e226d65c&callback=?", function(json) {
-				//json.overview is correct format for accessing overview from json.
-				//var i from for-loop cannot be accessed here and returns globalMovieArray[i] as undefined error.
-				//global taglineCounter works to load this info to globalMovieArray
-				globalMovieArray[taglineCounter].overview = json.overview;
-				//console.log("globalMovieArray[taglineCounter].overview: "+globalMovieArray[taglineCounter].overview);
-				globalMovieArray[taglineCounter].tagline = json.tagline;
-				//console.log("globalMovieArray[taglineCounter].tagline: "+globalMovieArray[taglineCounter].tagline);
-				console.log("getTaglineDone before taglineCounter: "+getTaglineDone);
-				console.log("taglineCounter: "+taglineCounter);
-				console.log("numberOfMovies: "+numberOfMovies);
-				if((taglineCounter + 1) === numberOfMovies){
-					console.log("Firing line 121");
+				globalMovieArray[taglineStartsCounter].overview = json.overview;
+				globalMovieArray[taglineStartsCounter].tagline = json.tagline;
+				taglineStartsCounter += 1;
+				if(taglineCompletesCounter === numberOfMovies){
+					console.log("Firing line 119 where taglineCompletesCounter === numberOfMovies");
 					getTaglineDone = true;
-					logGlobalMovieArray();
-				}
-				
-			});
+				}}).done(function () {taglineCompletesCounter += 1; console.log("In .done");});
 		}
-		console.log("Firing line 127");
-		//getTaglineDone = true; //this is firing before the getJSON data is all returned.
-		console.log("getTaglineDone@line130: "+getTaglineDone);
+		//anything here is fired when JSON is initiated; this is not a callback here.
 	};
 	
 	function getTrailer () { // (Promise flag not working; data upload is working) API call for overview and tagline.
@@ -196,7 +185,7 @@ $(document).ready(function(){
 	function waitForPromises() {
 		console.log("checkPromises():"+checkPromises());
 		if(checkPromises()){
-			//logGlobalMovieArray();
+			logGlobalMovieArray();
 			displayHTML();
 		} else { //if not, wait 1/4 second and call itself;
 			setTimeout(function () {
