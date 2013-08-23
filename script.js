@@ -42,7 +42,7 @@ $(document).ready(function(){
   }
   
   function logGlobalMovieArray () {
-	for(var i = 0; i < numberOfMovies; i++){
+	for(var i = 0; i < 2; i++){
 		var m = globalMovieArray[i];
 		console.log("i: "+i);
 		console.log("id: "+m.id);
@@ -81,8 +81,8 @@ $(document).ready(function(){
    };
 
    function makeMovieObjects (json) { //Make movie objects with proper movie ID, and with other properties empty.
-		numberOfMovies = json.results.length;
-		for (var i = 0; i < numberOfMovies; i++){
+		numberOfMovies = 2; //json.results.length;
+		for (var i = 0; i < 2 ; i++){
 			var movieID = json.results[i].id;
 			var newMovie = new MovieObject(movieID);
 			globalMovieArray.push(newMovie);
@@ -90,8 +90,8 @@ $(document).ready(function(){
    };
 
 	function getGeneral () { //API call for title, releaseYear, etc.
-		$.getJSON("https://api.themoviedb.org/3/search/movie?api_key=75d3deb3734e06d103614d18e226d65c&query='"+searchedName+"&callback=?", function (json) {
-			for (var i = 0; i < numberOfMovies; i++) {
+		$.getJSON("https://api.themoviedb.org/3/search/movie?api_key=75d3deb3734e06d103614d18e226d65c&query='"+searchedName+"&callback=?", function (json) { //Everything here is a callback and everything in the function runs after the request is complete
+			for (var i = 0; i < 2; i++) {
 				globalMovieArray[i].title = json.results[i].title;
 				globalMovieArray[i].releaseYear = ((json.results[i].release_date).substring(0,4));
 				globalMovieArray[i].posterURL = imageURLprefix + json.results[i].poster_path;
@@ -102,15 +102,15 @@ $(document).ready(function(){
 	};
 	
 	function getTagline () { // (Promise flag not working; data upload is working) API call for overview and tagline.
-		for(var i = 0; i < numberOfMovies; i++){
+		for(var i = 0; i < 2; i++){
 			var movieID = globalMovieArray[i].id;
 			taglineStartsCounter = i;
 			$.getJSON("https://api.themoviedb.org/3/movie/" + movieID + "?api_key=75d3deb3734e06d103614d18e226d65c&callback=?", function(json) {
 				globalMovieArray[taglineStartsCounter].overview = json.overview;
 				globalMovieArray[taglineStartsCounter].tagline = json.tagline;
 				taglineStartsCounter += 1;
-				if(taglineCompletesCounter === numberOfMovies){
-					console.log("Firing line 119 where taglineCompletesCounter === numberOfMovies");
+				if(taglineCompletesCounter === 2){
+					console.log("Firing line 119 where taglineCompletesCounter === 2");
 					getTaglineDone = true;
 				}}).done(function () {taglineCompletesCounter += 1; console.log("In .done");});
 		}
@@ -118,16 +118,17 @@ $(document).ready(function(){
 	};
 	
 	function getTrailer () { // (Promise flag not working; data upload is working) API call for overview and tagline.
-		for(var i = 0; i < numberOfMovies; i++){
+		for(var i = 0; i < 2; i++){
 			var movieID = globalMovieArray[i].id;
 			trailerCounter = i;
 			$.getJSON("https://api.themoviedb.org/3/movie/" + movieID + "/trailers?api_key=75d3deb3734e06d103614d18e226d65c&callback=?", function(json) {
+					console.dir(json);
 					if(json.youtube[0]){ //if there is a trailer, store it in movie object within globalMovieArray.
 					var	trailerURLfinal = trailerURLprefix + json.youtube[0].source
 					globalMovieArray[trailerCounter].trailer = trailerURLfinal;
 					//console.log("globalMovieArray[trailerCounter].trailer: "+globalMovieArray[trailerCounter].trailer);
 					}
-					if(trailerCounter === numberOfMovies){
+					if(trailerCounter === 2){
 						getTrailerDone = true;
 					}
 			});
@@ -137,9 +138,11 @@ $(document).ready(function(){
 	
 	function getCast() { // (Promise flag not working; data upload is working) API call to get top four cast and director.
 		castCounter = 0;
-		for(var i = 0; i < numberOfMovies; i++){
+		for(var i = 0; i < 2; i++){
 			var movieID = globalMovieArray[i].id;
 				$.getJSON("https://api.themoviedb.org/3/movie/" + movieID + "/casts?api_key=75d3deb3734e06d103614d18e226d65c&callback=?", function(json) {
+					console.log("Cast callback: ");
+					console.dir(json);
 					for(var b = 0; b < 4; b++){ //first 4 cast members are "starring" roles.
 						if(json.cast[b]){ //if there's a json cast object there, upload it.
 						globalMovieArray[castCounter].cast[b] = json.cast[b].name;
@@ -151,7 +154,7 @@ $(document).ready(function(){
 						}
 					}
 					castCounter += 1; //This is the callback--happens when the call is complete.
-					if(castCounter === numberOfMovies){
+					if(castCounter === 2){
 						getCastDone = true;
 					}
 				});
@@ -160,10 +163,10 @@ $(document).ready(function(){
 	};
 	
 	function startStage2APICalls() {
-		//getGeneral();
+		getGeneral();
 		getTagline();
-		//getTrailer();
-		//getCast();
+		getTrailer();
+		getCast();
 		
 		waitForPromises();
 	};
