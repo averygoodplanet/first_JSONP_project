@@ -3,12 +3,12 @@ $(document).ready(function(){
   var imageURLprefix = "http://d3gtl9l2a4fn1j.cloudfront.net/t/p/w185";
   var trailerURLprefix = "http://www.youtube.com/watch?v=";
   var globalMovieHash = {};
-  var numberOfMovies = 1; //for testing purposes, limit to small number of results. // need to change in resetGlobalVars() after testing.
+  var numberOfMovies = 2; //for testing purposes, limit to small number of results. // need to change in resetGlobalVars() after testing.
   var searchedName = null;
   var currentKey = null;
  	  
   function resetGlobalVars() {
-		numberOfMovies = 1;
+		numberOfMovies = 2;
 		currentKey = null;
 		//Don't reset searchedName here--it is reset in event handlers.
 	};
@@ -36,7 +36,6 @@ $(document).ready(function(){
 			globalMovieHash[MovieID].id = MovieID;
 			globalMovieHash[MovieID].remaining = 4; // Represents getGeneral(), getTagline(), getTrailer(), getCast();
 		}
-		logGlobalMovieHash();
  };
 
  function logGlobalMovieHash () {
@@ -67,7 +66,6 @@ $(document).ready(function(){
 				globalMovieHash[currentKey].averageVotes = json.results[order].vote_average;
 				//console.log("getGeneralcallback:");
 				globalMovieHash[currentKey].remaining -= 1;
-				logGlobalMovieHash();
 			}
 		);
 	};
@@ -81,7 +79,6 @@ $(document).ready(function(){
 			globalMovieHash[currentKey].tagline = json.tagline;
 			globalMovieHash[currentKey].remaining -= 1;
 			//console.log("getTagline's callback: ");
-			logGlobalMovieHash();
 		}
 		);
 	};
@@ -94,12 +91,11 @@ $(document).ready(function(){
 				globalMovieHash[currentKey].trailer = trailerURLfinal;
 				}
 			globalMovieHash[currentKey].remaining -= 1;
-			logGlobalMovieHash();
 			}
 		);
 	};
 	
-	function getCast() { // (Promise flag not working; data upload is working) API call to get top four cast and director.
+	function getCast() { // API call to get top four cast and director.
 		var movieID = currentKey;
 			$.getJSON("https://api.themoviedb.org/3/movie/" + movieID + "/casts?api_key=75d3deb3734e06d103614d18e226d65c&callback=?", function(json) {
 				globalMovieHash[currentKey].cast = [];
@@ -115,7 +111,6 @@ $(document).ready(function(){
 					}
 				}
 				globalMovieHash[currentKey].remaining -= 1;
-				logGlobalMovieHash();
 			});
 	};
 	
@@ -127,17 +122,30 @@ $(document).ready(function(){
 				getTagline(); //works for 1 movie and alone function
 				getTrailer();
 				getCast();
+				wait1MovieComplete();
 				//**Next
-				// (1) Try to run them all together with 1 movie (each with separate logGlobalMovieHash() 
-				// and using the Network tab in Chrome.
 				// (2) Then start making wait1Movie() function within this for-loop to see if it 
-				// works to wait till all calls are complete
+				// works to wait till all calls are complete for each movie (current movie.remaining == 0).
 				// (3) Then make sure that loop works with 2, 3, 10 movies. 
 			}
+		console.log("After for-loop: ");
+		logGlobalMovieHash();
 		//**After the loop, then will call displayHTML();
 		//displayHTML();
 	};
    
+    function wait1MovieComplete () { 
+		if(globalMovieHash[currentKey].remaining != 0){ 
+			console.log("globalMovieHash[currentKey].remaining: "+globalMovieHash[currentKey].remaining);
+			logGlobalMovieHash();
+			setTimeout (function () {
+				wait1MovieComplete();
+			}, 250);
+		} else {
+			return true;
+		}
+	};
+  
    function displayHTML() {//Build this after coordinate API asynchronous checkpoints.
 		console.log("In displayHTML function.");
    };
