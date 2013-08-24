@@ -125,12 +125,15 @@ $(document).ready(function(){
 				//getTagline(); //works for 1 movie and alone function
 				//getTrailer();
 				getCast();
+				//**Next
+				// (1) Try to run them all together (each with separate logGlobalMovieHash() 
+				// and using the Network tab in Chrome.
+				// (2) Then start making wait1Movie() function within this for-loop to see if it 
+				// works to wait till all calls are complete
+				// (3) Then make sure that loop works with 2, 3, 10 movies. 
 			}
-		//getGeneral();
-		//getTagline();
-		//getTrailer();
-		//getCast();
-		//waitForPromises();
+		//**After the loop, then will call displayHTML();
+		//displayHTML();
 	};
    
    function displayHTML() {//Build this after coordinate API asynchronous checkpoints.
