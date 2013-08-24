@@ -67,7 +67,7 @@ $(document).ready(function(){
 				globalMovieHash[currentKey].averageVotes = json.results[order].vote_average;
 				//console.log("getGeneralcallback:");
 				globalMovieHash[currentKey].remaining -= 1;
-				//logGlobalMovieHash();
+				logGlobalMovieHash();
 			}
 		);
 	};
@@ -81,7 +81,7 @@ $(document).ready(function(){
 			globalMovieHash[currentKey].tagline = json.tagline;
 			globalMovieHash[currentKey].remaining -= 1;
 			//console.log("getTagline's callback: ");
-			//logGlobalMovieHash();
+			logGlobalMovieHash();
 		}
 		);
 	};
@@ -94,6 +94,7 @@ $(document).ready(function(){
 				globalMovieHash[currentKey].trailer = trailerURLfinal;
 				}
 			globalMovieHash[currentKey].remaining -= 1;
+			logGlobalMovieHash();
 			}
 		);
 	};
@@ -114,6 +115,7 @@ $(document).ready(function(){
 					}
 				}
 				globalMovieHash[currentKey].remaining -= 1;
+				logGlobalMovieHash();
 			});
 	};
 	
@@ -121,12 +123,12 @@ $(document).ready(function(){
 			for(key in globalMovieHash){
 				currentKey = key;
 				console.log("currentKey: "+currentKey);
-				//getGeneral(); //works for 1 movie and alone function
-				//getTagline(); //works for 1 movie and alone function
-				//getTrailer();
+				getGeneral(); //works for 1 movie and alone function
+				getTagline(); //works for 1 movie and alone function
+				getTrailer();
 				getCast();
 				//**Next
-				// (1) Try to run them all together (each with separate logGlobalMovieHash() 
+				// (1) Try to run them all together with 1 movie (each with separate logGlobalMovieHash() 
 				// and using the Network tab in Chrome.
 				// (2) Then start making wait1Movie() function within this for-loop to see if it 
 				// works to wait till all calls are complete
