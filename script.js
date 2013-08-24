@@ -49,41 +49,41 @@ $(document).ready(function(){
 		resetGlobalVars();
 		$.getJSON("https://api.themoviedb.org/3/search/movie?api_key=75d3deb3734e06d103614d18e226d65c&query='"+searchedName+"&callback=?", function (json) {
 			makeHashKeys(json);
+			console.log("original json: ");
+			console.log(json);
 			stage2APICalls();
 		});
    };
 
 	function getGeneral () { //API call for title, releaseYear, etc.
 		$.getJSON("https://api.themoviedb.org/3/search/movie?api_key=75d3deb3734e06d103614d18e226d65c&query='"+searchedName+"&callback=?", function (json) { //Everything here is a callback and everything in the function runs after the request is complete
-				console.log("json: ");
-				console.log(json);
+				//console.log("json: ");
+				//console.log(json);
 				var order = globalMovieHash[currentKey].originalOrder;
-				console.log("order: "+order);
+				//console.log("order: "+order);
 				globalMovieHash[currentKey].title = json.results[order].title;
 				globalMovieHash[currentKey].releaseYear = ((json.results[order].release_date).substring(0,4));
 				globalMovieHash[currentKey].posterURL = imageURLprefix + json.results[order].poster_path;
 				globalMovieHash[currentKey].averageVotes = json.results[order].vote_average;
-				console.log("getGeneralcallback:");
+				//console.log("getGeneralcallback:");
 				globalMovieHash[currentKey].remaining -= 1;
-				logGlobalMovieHash();
+				//logGlobalMovieHash();
 			}
 		);
 	};
 	
-	function getTagline () { // (Promise flag not working; data upload is working) API call for overview and tagline.
-		for(var i = 0; i < 2; i++){
-			var movieID = globalMovieHash[i].id;
-			taglineStartsCounter = i;
-			$.getJSON("https://api.themoviedb.org/3/movie/" + movieID + "?api_key=75d3deb3734e06d103614d18e226d65c&callback=?", function(json) {
-				globalMovieHash[taglineStartsCounter].overview = json.overview;
-				globalMovieHash[taglineStartsCounter].tagline = json.tagline;
-				taglineStartsCounter += 1;
-				if(taglineCompletesCounter === 2){
-					console.log("Firing line 119 where taglineCompletesCounter === 2");
-					getTaglineDone = true;
-				}}).done(function () {taglineCompletesCounter += 1; console.log("In .done");});
+	function getTagline () { // API call for overview and tagline.
+		var movieID = currentKey;
+		$.getJSON("https://api.themoviedb.org/3/movie/" + movieID + "?api_key=75d3deb3734e06d103614d18e226d65c&callback=?", function(json) {
+			//console.log("json in getTagline(): ");
+			//console.log(json);
+			globalMovieHash[currentKey].overview = json.overview;
+			globalMovieHash[currentKey].tagline = json.tagline;
+			globalMovieHash[currentKey].remaining -= 1;
+			//console.log("getTagline's callback: ");
+			//logGlobalMovieHash();
 		}
-		//anything here is fired when JSON is initiated; this is not a callback here.
+		);
 	};
 	
 	function getTrailer () { // (Promise flag not working; data upload is working) API call for overview and tagline.
@@ -135,7 +135,8 @@ $(document).ready(function(){
 			for(key in globalMovieHash){
 				currentKey = key;
 				console.log("currentKey: "+currentKey);
-				getGeneral();		
+				//getGeneral(); //works for 1 movie and alone function
+				//getTagline(); //works for 1 movie and alone function
 			}
 		//getGeneral();
 		//getTagline();
