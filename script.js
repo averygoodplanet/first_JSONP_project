@@ -99,29 +99,22 @@ $(document).ready(function(){
 	};
 	
 	function getCast() { // (Promise flag not working; data upload is working) API call to get top four cast and director.
-		castCounter = 0;
-		for(var i = 0; i < 2; i++){
-			var movieID = globalMovieHash[i].id;
-				$.getJSON("https://api.themoviedb.org/3/movie/" + movieID + "/casts?api_key=75d3deb3734e06d103614d18e226d65c&callback=?", function(json) {
-					console.log("Cast callback: ");
-					console.dir(json);
-					for(var b = 0; b < 4; b++){ //first 4 cast members are "starring" roles.
-						if(json.cast[b]){ //if there's a json cast object there, upload it.
-						globalMovieHash[castCounter].cast[b] = json.cast[b].name;
-						}
+		var movieID = currentKey;
+			$.getJSON("https://api.themoviedb.org/3/movie/" + movieID + "/casts?api_key=75d3deb3734e06d103614d18e226d65c&callback=?", function(json) {
+				globalMovieHash[currentKey].cast = [];
+				for(var b = 0; b < 4; b++){ //first 4 cast members are "starring" roles.
+					if(json.cast[b]){ //if there's a json cast object there, upload it.
+					globalMovieHash[currentKey].cast[b] = json.cast[b].name;
 					}
-					for(var c = 0; c < json.crew.length; c++){
-						if(json.crew[c].job == "Director"){
-							globalMovieHash[castCounter].director = json.crew[c].name;
-						}
+				}
+				globalMovieHash[currentKey].director = "";
+				for(var c = 0; c < json.crew.length; c++){
+					if(json.crew[c].job == "Director"){
+						globalMovieHash[currentKey].director = json.crew[c].name;
 					}
-					castCounter += 1; //This is the callback--happens when the call is complete.
-					if(castCounter === 2){
-						getCastDone = true;
-					}
-				});
-		//This line runs before the callbacks come back.
-		}
+				}
+				globalMovieHash[currentKey].remaining -= 1;
+			});
 	};
 	
 	function stage2APICalls() {
@@ -130,7 +123,8 @@ $(document).ready(function(){
 				console.log("currentKey: "+currentKey);
 				//getGeneral(); //works for 1 movie and alone function
 				//getTagline(); //works for 1 movie and alone function
-				getTrailer();
+				//getTrailer();
+				getCast();
 			}
 		//getGeneral();
 		//getTagline();
