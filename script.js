@@ -3,12 +3,14 @@ $(document).ready(function(){
   var imageURLprefix = "http://d3gtl9l2a4fn1j.cloudfront.net/t/p/w185";
   var trailerURLprefix = "http://www.youtube.com/watch?v=";
   var globalMovieHash = {};
-  var numberOfMovies = 2; //for testing purposes, limit to return two (2) results. // need to change in resetGlobalVars() after testing.
+  var numberOfMovies = 1; //for testing purposes, limit to small number of results. // need to change in resetGlobalVars() after testing.
   var searchedName = null;
+  var currentKey = null;
  	  
   function resetGlobalVars() {
-		numberOfMovies = 2;
-		searchedName = null;
+		numberOfMovies = 1;
+		currentKey = null;
+		//Don't reset searchedName here--it is reset in event handlers.
 	};
   
   $("#search").keypress(function (event) { //Calls getMovieIDs when ENTER pressed in input box, then clears input box.
@@ -35,7 +37,6 @@ $(document).ready(function(){
 			globalMovieHash[MovieID].remaining = 4; // Represents getGeneral(), getTagline(), getTrailer(), getCast();
 		}
 		logGlobalMovieHash();
-		console.log("End of makeHashKeys function.");
  };
 
  function logGlobalMovieHash () {
@@ -48,20 +49,25 @@ $(document).ready(function(){
 		resetGlobalVars();
 		$.getJSON("https://api.themoviedb.org/3/search/movie?api_key=75d3deb3734e06d103614d18e226d65c&query='"+searchedName+"&callback=?", function (json) {
 			makeHashKeys(json);
-			//startStage2APICalls(); 
+			stage2APICalls();
 		});
    };
 
 	function getGeneral () { //API call for title, releaseYear, etc.
 		$.getJSON("https://api.themoviedb.org/3/search/movie?api_key=75d3deb3734e06d103614d18e226d65c&query='"+searchedName+"&callback=?", function (json) { //Everything here is a callback and everything in the function runs after the request is complete
-			for (var i = 0; i < 2; i++) {
-				globalMovieHash[i].title = json.results[i].title;
-				globalMovieHash[i].releaseYear = ((json.results[i].release_date).substring(0,4));
-				globalMovieHash[i].posterURL = imageURLprefix + json.results[i].poster_path;
-				globalMovieHash[i].averageVotes = json.results[i].vote_average;
+				console.log("json: ");
+				console.log(json);
+				var order = globalMovieHash[currentKey].originalOrder;
+				console.log("order: "+order);
+				globalMovieHash[currentKey].title = json.results[order].title;
+				globalMovieHash[currentKey].releaseYear = ((json.results[order].release_date).substring(0,4));
+				globalMovieHash[currentKey].posterURL = imageURLprefix + json.results[order].poster_path;
+				globalMovieHash[currentKey].averageVotes = json.results[order].vote_average;
+				console.log("getGeneralcallback:");
+				globalMovieHash[currentKey].remaining -= 1;
+				logGlobalMovieHash();
 			}
-			getGeneralDone = true;
-		});
+		);
 	};
 	
 	function getTagline () { // (Promise flag not working; data upload is working) API call for overview and tagline.
@@ -125,12 +131,17 @@ $(document).ready(function(){
 		}
 	};
 	
-	function startStage2APICalls() {
-		getGeneral();
-		getTagline();
-		getTrailer();
-		getCast();
-		waitForPromises();
+	function stage2APICalls() {
+			for(key in globalMovieHash){
+				currentKey = key;
+				console.log("currentKey: "+currentKey);
+				getGeneral();		
+			}
+		//getGeneral();
+		//getTagline();
+		//getTrailer();
+		//getCast();
+		//waitForPromises();
 	};
    
    function displayHTML() {//Build this after coordinate API asynchronous checkpoints.
