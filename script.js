@@ -86,23 +86,16 @@ $(document).ready(function(){
 		);
 	};
 	
-	function getTrailer () { // (Promise flag not working; data upload is working) API call for overview and tagline.
-		for(var i = 0; i < 2; i++){
-			var movieID = globalMovieHash[i].id;
-			trailerCounter = i;
-			$.getJSON("https://api.themoviedb.org/3/movie/" + movieID + "/trailers?api_key=75d3deb3734e06d103614d18e226d65c&callback=?", function(json) {
-					console.dir(json);
-					if(json.youtube[0]){ //if there is a trailer, store it in movie object within globalMovieHash.
-					var	trailerURLfinal = trailerURLprefix + json.youtube[0].source
-					globalMovieHash[trailerCounter].trailer = trailerURLfinal;
-					//console.log("globalMovieHash[trailerCounter].trailer: "+globalMovieHash[trailerCounter].trailer);
-					}
-					if(trailerCounter === 2){
-						getTrailerDone = true;
-					}
-			});
-		}
-		//this is firing before the getJSON data is all returned.
+	function getTrailer () { // API call for movie trailer URL.
+		var movieID = currentKey;
+		$.getJSON("https://api.themoviedb.org/3/movie/" + movieID + "/trailers?api_key=75d3deb3734e06d103614d18e226d65c&callback=?", function(json) {
+				if(json.youtube[0]){ //if there is a trailer, store it in movie object within globalMovieHash.
+				var	trailerURLfinal = trailerURLprefix + json.youtube[0].source;
+				globalMovieHash[currentKey].trailer = trailerURLfinal;
+				}
+			globalMovieHash[currentKey].remaining -= 1;
+			}
+		);
 	};
 	
 	function getCast() { // (Promise flag not working; data upload is working) API call to get top four cast and director.
@@ -137,6 +130,7 @@ $(document).ready(function(){
 				console.log("currentKey: "+currentKey);
 				//getGeneral(); //works for 1 movie and alone function
 				//getTagline(); //works for 1 movie and alone function
+				getTrailer();
 			}
 		//getGeneral();
 		//getTagline();
