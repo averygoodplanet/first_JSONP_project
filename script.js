@@ -117,7 +117,7 @@ $(document).ready(function(){
 	function stage2APICalls() {
 			for(key in globalMovieHash){
 				currentKey = key;
-				console.log("currentKey: "+currentKey);
+				console.log("new iteration FOR-LOOP currentKey: "+currentKey);
 				getGeneral(); //works for 1 movie and alone function
 				getTagline(); //works for 1 movie and alone function
 				getTrailer();
@@ -128,20 +128,25 @@ $(document).ready(function(){
 				// works to wait till all calls are complete for each movie (current movie.remaining == 0).
 				// (3) Then make sure that loop works with 2, 3, 10 movies. 
 			}
-		console.log("After for-loop: ");
+		console.log("AFTER for-loop: ");
 		logGlobalMovieHash();
 		//**After the loop, then will call displayHTML();
 		//displayHTML();
 	};
    
-    function wait1MovieComplete () { 
+    function wait1MovieComplete () {
+		console.log("begin Wait1MovieComplete()");
+		console.log("currentKey: "+currentKey);
+		console.log("globalMovieHash[currentKey].remaining: "+globalMovieHash[currentKey].remaining);
+		//logGlobalMovieHash();
 		if(globalMovieHash[currentKey].remaining > 0){ 
-			console.log("globalMovieHash[currentKey].remaining: "+globalMovieHash[currentKey].remaining);
-			logGlobalMovieHash();
+			console.log("in wait1MovieComplete IF condition");
 			setTimeout (function () {
 				wait1MovieComplete();
 			}, 250);
 		} else {
+			console.log("in wait1MovieComplete ELSE condition.");
+			logGlobalMovieHash();
 			return true;
 		}
 	};
