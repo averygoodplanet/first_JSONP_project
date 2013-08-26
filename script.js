@@ -135,7 +135,7 @@ $(document).ready(function(){
 	};
    
     function wait1MovieComplete () { 
-		if(globalMovieHash[currentKey].remaining != 0){ 
+		if(globalMovieHash[currentKey].remaining > 0){ 
 			console.log("globalMovieHash[currentKey].remaining: "+globalMovieHash[currentKey].remaining);
 			logGlobalMovieHash();
 			setTimeout (function () {
