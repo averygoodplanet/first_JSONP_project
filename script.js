@@ -7,58 +7,6 @@ $(document).ready(function(){
   var trailerURLfinal = "";  
   var globalMoviearray = [];
   
-var testCallAPI = function (movieSearchname) {
-	    $.getJSON("https://api.themoviedb.org/3/search/movie?api_key=75d3deb3734e06d103614d18e226d65c&query='"+movieSearchname+"&callback=?", function(json) { 
-		//Initial search by movie name to return movie IDs
-		var n = json.results.length;
-		var arrayOfmovies = [];
-		for (var i = 0; i < n; i++){ //Looping over each movie ID that was returned (and storing pieces of data provided by this API call).
-			var movie = {};
-			movie.title = json.results[i].title;
-			movie.releaseYear = ((json.results[i].release_date).substring(0,4));
-			movie.posterURL = imageURLprefix + json.results[i].poster_path;
-			movie.averageVotes = json.results[i].vote_average;
-			movie.movieId = json.results[i].id;
-			arrayOfmovies.push(movie);	
-				$.getJSON("https://api.themoviedb.org/3/movie/" + movie.movieId + "/casts?api_key=75d3deb3734e06d103614d18e226d65c&callback=?", function(json) {
-				console.log("**Test of whether still movie.title: "+movie.title);
-				console.log(json);
-				//get first cast member
-				console.log("First cast member: "+ json.cast[0].name);
-					//get first four (4) cast members--this is what "The Movie Database" shows as "Starring".
-				$(".starring > li").remove(); //removing previous cast members.
-				for(var i = 0; i < 4; i++){
-					console.log("The " +(i+1)+"th cast member: "+json.cast[i].name);
-					$(".starring").append('<li>'+json.cast[i].name+'</li');
-				}
-				for(var i = 0; i < json.crew.length; i++){
-					if(json.crew[i].job == "Director"){
-						console.log("Director:  "+json.crew[i].name);
-						$(".director").html("Director: "+json.crew[i].name);
-					}
-				}
-					//getting "basic movie information" via /3/movie/{id}
-					$.getJSON("https://api.themoviedb.org/3/movie/" + movie.movieId + "?api_key=75d3deb3734e06d103614d18e226d65c&callback=?", function(json) {
-					console.log(json);
-					console.log("Overview: "+json.overview);
-					$(".overview_style").html("Overview: "+json.overview);
-					console.log("Tagline: "+json.tagline);
-					$(".tagline").html('"'+json.tagline+'"');
-						//getting trailer information via /3/movie/{id}/trailers
-						$.getJSON("https://api.themoviedb.org/3/movie/" + movieId + "/trailers?api_key=75d3deb3734e06d103614d18e226d65c&callback=?", function(json) {
-						console.log(json);
-						console.log("youtube trailer source: "+json.youtube[0].source);
-						trailerURLfinal = trailerURLprefix + json.youtube[0].source;
-						console.log("trailerURLfinal: "+trailerURLfinal);
-						$(".trailer").attr('href', trailerURLfinal);
-						});
-					
-					});
-				});
-		//if(i == 6){break;}		
-		}
-		});
-		}
   
   var callAPI = function (movieSearchname) {
 	   //testing API calls for 1st movie returned on movie name search using ".../3/search/movie?api_key=###&query='movie name'..."
