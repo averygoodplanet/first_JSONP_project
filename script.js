@@ -2,11 +2,10 @@ $(document).ready(function(){
    
   var imageURLprefix = "http://d3gtl9l2a4fn1j.cloudfront.net/t/p/w185";
   var imageURLfinal = "";
+  //var movieSearchname = "Howard the Duck";
   var movieId = null;
   var trailerURLprefix = "http://www.youtube.com/watch?v=";
   var trailerURLfinal = "";  
-  var globalMoviearray = [];
-  
   
   var callAPI = function (movieSearchname) {
 	   //testing API calls for 1st movie returned on movie name search using ".../3/search/movie?api_key=###&query='movie name'..."
@@ -24,7 +23,7 @@ $(document).ready(function(){
 		console.log("vote_average: "+json.results[0].vote_average);
 		$(".avg_votes").html("Average votes: "+json.results[0].vote_average);
 		console.log("vote_count: "+json.results[0].vote_count);
-		movieId = json.results[0].id; //this uses movieId of "0th" json.result to direct next API call. 
+		movieId = json.results[0].id;
 		console.log("movieId: "+ movieId);
 		//retrieved the movieId from movie name search
 				//using movieId to launch API for cast info using "/3/movie/{id}/casts?..."
@@ -34,7 +33,6 @@ $(document).ready(function(){
 				//get first cast member
 				console.log("First cast member: "+ json.cast[0].name);
 					//get first four (4) cast members--this is what "The Movie Database" shows as Starring.
-				$(".starring > li").remove(); //removing previous cast members.
 				for(var i = 0; i < 4; i++){
 					console.log("The " +(i+1)+"th cast member: "+json.cast[i].name);
 					$(".starring").append('<li>'+json.cast[i].name+'</li');
@@ -60,9 +58,11 @@ $(document).ready(function(){
 						console.log("trailerURLfinal: "+trailerURLfinal);
 						$(".trailer").attr('href', trailerURLfinal);
 						});
-					
+
 					});
 				});
+	console.log("Hey:"+movieId); // Was the global variable changed?--No. Something to do with asynchronous nature 
+	//of getJSON?? 
 
 	});
 	}
@@ -73,7 +73,7 @@ $(document).ready(function(){
 	callAPI(movieSearchname);
 	$("#search").val("");
   });
-	
+
   $("#search").keypress(function (event) { //Calls callAPI when ENTER pressed in input box, then clears input box.
     if(event.which == 13) { //13 is for ENTER key
 		var movieSearchname = document.getElementById("search").value;
@@ -81,5 +81,5 @@ $(document).ready(function(){
 		$(this).val("");
 	}
 	});
-	
+
 });
