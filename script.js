@@ -60,8 +60,6 @@ var testCallAPI = function (movieSearchname) {
 		});
 		}
   
-testCallAPI("Rambo");
-
   var callAPI = function (movieSearchname) {
 	   //testing API calls for 1st movie returned on movie name search using ".../3/search/movie?api_key=###&query='movie name'..."
 	   $.getJSON("https://api.themoviedb.org/3/search/movie?api_key=75d3deb3734e06d103614d18e226d65c&query='"+movieSearchname+"&callback=?", function(json) {
