@@ -1,6 +1,7 @@
 first_JSONP_project (The Movie Spot)
 ====================================
 
+
 This project was my first introduction to doing an AJAX request.
 
 The project gets a movie title string from the user, then submits 
