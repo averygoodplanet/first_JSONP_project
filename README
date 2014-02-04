@@ -1,0 +1,18 @@
+first_JSONP_project (The Movie Spot)
+====================================
+
+This project was my first introduction to doing an AJAX request.
+
+The project gets a movie title string from the user, then submits 
+an AJAX request to api.themoviedb.org, which returns JSON which 
+is then stored in a Javascript object.
+
+The Javascript object is then mapped to populate stylized html elements 
+on the page for the movie returned. 
+
+Initially the idea was to return multiple movies, but given the level 
+I was at (at the time of the project) and some possible issues with 
+nested callbacks with this API, the project was revised to just return
+one movie. By comparing this earlier code (needs quite a bit of refactoring)
+to my later projects, you can see how my style has improved.
+
